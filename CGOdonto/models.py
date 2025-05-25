@@ -6,12 +6,14 @@ from django.utils.timezone import now
 class Tratamiento(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
     precio = models.FloatField(null=False, blank=False, default=0)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre
 
 class Enfermedad(models.Model):
     nombre = models.CharField(max_length=100, null=False, blank=False)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre
@@ -42,6 +44,7 @@ class Paciente(models.Model):
     anestesia = models.IntegerField(null=False, blank=False, default=0)
     testElisa = models.BooleanField(default=False, null=False, blank=False)
     haceCuantoTestElisa = models.CharField(max_length=100)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombreCompleto
@@ -51,6 +54,7 @@ class Odontologo(models.Model):
     nro_cedula = models.CharField(max_length=20, null=False, default="0000", unique=True)
     nro_matricula = models.CharField(null=False, blank=False, default=0)
     telefono = models.CharField(max_length=20, blank=True)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username
@@ -61,6 +65,7 @@ class Turno(models.Model):
     tratamiento = models.ForeignKey(Tratamiento, on_delete=models.CASCADE, null=False, blank=False)
     fecha = models.DateField(null=False, blank=False)
     hora = models.TimeField(null=False, blank=False)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.paciente.nombreCompleto
@@ -70,6 +75,7 @@ class PlanTratamiento(models.Model):
     odotologo = models.ForeignKey(Odontologo, on_delete=models.CASCADE, null=False, blank=False)
     fecha = models.DateField(null=False, blank=False, default=now)
     tratamiento = models.ManyToManyField(Tratamiento)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.paciente.nombreCompleto
@@ -78,6 +84,7 @@ class planTratamientoEntregas(models.Model):
     planTratamiento = models.ForeignKey(PlanTratamiento, on_delete=models.CASCADE, null=False, blank=False)
     monto = models.FloatField(null=False, blank=False, default=0)
     fecha = models.DateField(null=False, blank=False, default=now)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.planTratamiento.paciente.nombreCompleto
