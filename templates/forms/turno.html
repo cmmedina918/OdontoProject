@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% if modo == 'create' %}
+    	Crear un nuevo turno
+    {% elif modo == 'update' %}
+        Modificar turno
+    {% endif %}
+{% endblock %}
+{% block body %}
+	<div class="d-flex justify-content-center">
+        <div>
+            <br>
+            <h2>
+                {% if modo == 'create' %}
+                    Crear un nuevo turno
+                {% elif modo == 'update' %}
+                    Modificar turno
+                {% endif %}
+            </h2>
+            <br>
+            <form method="POST" class="container-lg">
+                {% csrf_token %}
+                <div class="w-100">
+                    <div class="mb-3">
+                        {{ form.paciente.label_tag }} {{ form.paciente }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.odontologo.label_tag }} {{ form.odontologo }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.tratamiento.label_tag }} {{ form.tratamiento }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.fecha.label_tag }} {{ form.fecha }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.hora.label_tag }} {{ form.hora }}
+                    </div>
+                    <br>
+                    <input class="btn btn-success" type="submit" value="Guardar">
+                    <br>
+                    </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	{% if modo == 'crear'%}
+		Crear plan de Tratamiento
+	{% else %}
+		Modificar plan de Tratamiento
+	{% endif %}
+{% endblock %}
+{% block body %}
+    <div class="d-flex justify-content-center container">
+        <div>
+            <br>
+            <h2>{% if modo == 'crear' %}
+                Crear plan de Tratamiento
+            {% else %}
+                Modificar plan de Tratamiento
+            {% endif %}</h2>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.paciente.label_tag }} {{ form.paciente }}
+                </div>
+                <div class="mb-3">
+                    {{ form.odotologo.label_tag }} {{ form.odotologo }}
+                </div>
+                <div class="mb-3">
+                    {{ form.diagnostico.label_tag }} {{ form.diagnostico }}
+                </div>
+                <br>
+                <div class="mb-3">
+                    <h5 class="mb-3">Procedimientos</h5>
+                    {{ formset.management_form }}
+                    <div id="empty-form-plan" class="d-none">
+                        <div class="border-bottom py-2 d-flex gap-2 align-items-center formset-form">
+                            {{ formset.empty_form.id }}
+                            <div class="flex-grow-1">
+                                <div class="row g-2">
+                                    <div class="col-md-5">
+                                        {{ formset.empty_form.procedimento }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ formset.empty_form.diente }}
+                                    </div>
+                                    <div class="col-md-3">
+                                        {{ formset.empty_form.precio }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="removePlanForm(this)">
+                                    <img src="{% static 'icon/trash3-fill.svg' %}" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="procedimientos-container-plan">
+                        {% for f in formset %}
+                            <div class="border-bottom py-2 d-flex gap-2 align-items-center">
+                                {{ f.id }}
+                                <div class="flex-grow-1">
+                                    <div class="row g-2">
+                                        <div class="col-md-5">
+                                            {{ f.procedimento }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ f.diente }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ f.precio }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    {% if f.instance.pk %}
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete(this)">
+                                            <img src="{% static 'icon/trash3-fill.svg' %}" alt="">
+                                        </button>
+                                        {{ f.DELETE }}
+                                    {% else %}
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removePlanForm(this)">
+                                            <img src="{% static 'icon/trash3-fill.svg' %}" alt="">
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn btn-outline-primary mt-3" onclick="addPlanForm()">+ Agregar Procedimiento</button>
+                </div>
+                <input class="btn btn-success" type="submit" value="Guardar">
+            </form>
+        </div>
+    </div>
+    <div id="formset-meta"
+     data-form-index="{{ formset.total_form_count }}"
+     data-form-prefix="{{ formset.prefix }}"></div>
+{% endblock %}

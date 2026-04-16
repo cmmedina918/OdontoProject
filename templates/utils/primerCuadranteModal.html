@@ -1,0 +1,99 @@
+{% load static %}
+<div class="modal modal-lg fade" id="cuadrante-1-Modal"
+     tabindex="-1"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true"
+     data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cuadrante 1</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-7 d-flex justify-content-around align-items-center flex-wrap w-100"
+                             id="quadrantDientesContainer">
+                            {% for i in range_8 %}
+                                <a class="diente-en-modal text-decoration-none text-black text-center"
+                                   id="tooth-{{ i }}">
+                                    <div class="tooth-svg-placeholder">
+                                        {% include 'utils/diente.html' %}
+                                    </div>
+                                    <span class="diente-label">1{{ i }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-5 text-center w-100">
+                            <br>
+                            <h3>Estado del diente</h3>
+                            {{ formset.management_form }}
+                            <div id="estadoDiente-container">
+                                {% for f in formset.forms %}
+                                    <div class="border-bottom py-2 d-flex gap-2 align-items-center form-row">
+                                        {{ f.id }}
+                                        <div class="flex-grow-1">
+                                            <div class="row g-2">
+                                                <div class="">
+                                                    {{ f.diente }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    {{ f.cara }}
+                                                </div>
+                                                <div class="col-md-3">
+                                                    {{ f.estado }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="d-none">
+                                                {{ f.DELETE }}
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-danger remove-form" onclick="removeEstadoDienteForm(this)">
+                                                <img src="{% static 'icon/trash3-fill.svg' %}" alt="">
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="button" class="btn btn-outline-primary mt-3" id="add-form-btn" onclick="addEstadoDienteForm()">
+                                + Agregar cara
+                            </button>
+
+                            <div id="empty-form-estadoDiente" class="d-none">
+                                <div class="border-bottom py-2 d-flex gap-2 align-items-center form-row">
+                                    {{ formset.empty_form.id }} <!-- Campo oculto si corresponde -->
+                                    <div class="flex-grow-1">
+                                        <div class="row g-2">
+                                            <div class="">
+                                                {{ formset.empty_form.diente }}
+                                            </div>
+                                            <div class="col-md-4">
+                                                {{ formset.empty_form.cara }}
+                                            </div>
+                                            <div class="col-md-3">
+                                                {{ formset.empty_form.estado }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-sm btn-danger remove-form" onclick="removeEstadoDienteForm(this)">
+                                            <img src="{% static 'icon/trash3-fill.svg' %}" alt="">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

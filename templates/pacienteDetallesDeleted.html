@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Detalles de {{ paciente.nombreCompleto }}
+{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <br>
+    <h2>Detalle del paciente: {{ paciente.nombreCompleto }}</h2>
+    <br>
+    <div class="accordion" id="accordionPaciente">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <span class="accordion-button static-header bg-light fw-bold text-black">
+                    Datos personales
+                </span>
+            </h2>
+            <div class="accordion-body border-top">
+                <p><strong>Número de cédula:</strong> {{ paciente.CI }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ paciente.fechaNacimieto }}</p>
+                <p><strong>Sexo:</strong> {{ paciente.sexo|yesno:"Femenino,Masculino" }}</p>
+                <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+                <p><strong>Fecha de Ingreso:</strong> {{ paciente.fechaIngreso }}</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingAntecedentes">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAntecedentes" aria-expanded="false" aria-controls="collapseAntecedentes">
+                    Antecedentes y observaciones
+                </button>
+            </h2>
+            <div id="collapseAntecedentes" class="accordion-collapse collapse" aria-labelledby="headingAntecedentes" data-bs-parent="#accordionPaciente">
+                <div class="accordion-body">
+                    <p><strong>Antecedentes:</strong>
+                        {% for enf in paciente.antecedentesFamiliares.all %}
+                            {{ enf.nombre }}{% if not forloop.last %}, {% endif %}
+                        {% empty %} Ninguno
+                        {% endfor %}
+                    </p>
+                    <p><strong>Observaciones:</strong> {{ paciente.observaciones|default:"-" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingHistorial">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHistorial" aria-expanded="false" aria-controls="collapseHistorial">
+                    Historial médico
+                </button>
+            </h2>
+            <div id="collapseHistorial" class="accordion-collapse collapse" aria-labelledby="headingHistorial" data-bs-parent="#accordionPaciente">
+                <div class="accordion-body">
+                    <p><strong>Necesita transfusión:</strong> {{ paciente.transfucion|yesno:"Sí,No" }}</p>
+                    {% if paciente.transfucion %}<p><strong>Motivo:</strong> {{ paciente.transfucionMotivo }}</p>{% endif %}
+
+                    <p><strong>Tuvo una cirugía:</strong> {{ paciente.cirugia|yesno:"Sí,No" }}</p>
+                    {% if paciente.cirugia %}<p><strong>Motivo:</strong> {{ paciente.cirugiaMotivo }}</p>{% endif %}
+
+                    <p><strong>Se ha realizado el test Elisa:</strong> {{ paciente.testElisa|yesno:"Sí,No" }}</p>
+                    {% if paciente.testElisa %}<p><strong>Hace cuánto:</strong> {{ paciente.haceCuantoTestElisa }}</p>{% endif %}
+
+                    <p><strong>Sangra:</strong> {{ paciente.sangra|yesno:"Sí,No" }}</p>
+
+                    <p><strong>Es alercio/a a nestesia:</strong>
+                        {% if paciente.anestesia == 0 %}No
+                        {% elif paciente.anestesia == 1 %}No sé
+                        {% else %}Sí{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingConsumo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConsumo" aria-expanded="false" aria-controls="collapseConsumo">
+                    Consumo de sustancias
+                </button>
+            </h2>
+            <div id="collapseConsumo" class="accordion-collapse collapse" aria-labelledby="headingConsumo" data-bs-parent="#accordionPaciente">
+                <div class="accordion-body">
+                    <p><strong>Fuma:</strong> {{ paciente.fuma|yesno:"Sí,No" }}</p>
+                    {% if paciente.fuma %}
+                        <p><strong>Hace cuánto fuma:</strong> {{ paciente.haceCuantoFuma }}</p>
+                        <p><strong>Cuánto fuma:</strong> {{ paciente.cuantoFuma }}</p>
+                    {% endif %}
+
+                    <p><strong>Toma:</strong> {{ paciente.toma|yesno:"Sí,No" }}</p>
+                    {% if paciente.toma %}
+                        <p><strong>Hace cuánto toma:</strong> {{ paciente.haceCuantoToma }}</p>
+                        <p><strong>Cuánto toma:</strong> {{ paciente.cuantoToma }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if paciente.sexo %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEmbarazo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEmbarazo" aria-expanded="false" aria-controls="collapseEmbarazo">
+                    Embarazo
+                </button>
+            </h2>
+            <div id="collapseEmbarazo" class="accordion-collapse collapse" aria-labelledby="headingEmbarazo" data-bs-parent="#accordionPaciente">
+                <div class="accordion-body">
+                    <p><strong>Embarazo:</strong>
+                        {% if paciente.embarazo == 0 %}No
+                        {% elif paciente.embarazo == 1 %}No sé
+                        {% else %}Sí{% endif %}
+                    </p>
+                    {% if paciente.embarazo == 2 %}
+                        <p><strong>Semanas de embarazo:</strong> {{ paciente.semanasEmbarazo }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-3">
+        <form action="{% url 'pacienteActivate' paciente.id %}" method="post" class="delete-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success"
+                    onclick="return confirm('¿Desea restaurar el paciente {{ paciente.nombreCompleto }}?')">
+                Restaurar
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

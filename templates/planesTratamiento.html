@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+	Planes de tratamiento
+{% endblock %}
+{% block body %}
+	<br>
+    <div class="d-flex justify-content-center justify-content-between">
+        <h2>Planes de tratamiento</h2>
+        <form method="get" class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Buscar por nombre o CI" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-info" type="submit">Buscar</button>
+        </form>
+        <a class="btn btn-success pb-0" href="{% url 'planCreate' %}"><img src="{% static 'icon/plus-lg.svg' %}" alt="plus-icon"></a>
+    </div>
+    <br>
+    {% if page_obj %}
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-info">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Diagnostico</th>
+                    <th>Tratamientos</th>
+                    <th>Saldo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in page_obj %}
+                    <tr>
+                        <td>{{ plan.paciente.nombreCompleto }}</td>
+                        <td>{{ plan.diagnostico }}</td>
+                        <td>
+                            <ul class="mb-0 list-unstyled">
+                                {% for ptp in plan.plantratamiento_procedimiento_set.all %}
+                                    <li>
+                                        {{ ptp.procedimento.nombre }}
+                                        {% if ptp.diente %} (Diente {{ ptp.diente.numero }}){% endif %}
+                                        – Gs. {{ ptp.precio|floatformat:0 }}
+                                    </li>
+                                {% empty %}
+                                    <li>Sin procedimientos</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <strong>Total:</strong> Gs. {{ plan.total|floatformat:0 }}
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-success pb-2" href="{% url 'planDetail' plan.id %}">
+                                Ver detalles
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <small class="text-muted d-block">
+            Mostrando {{ page_obj.start_index }} –
+            {{ page_obj.end_index }} de {{ page_obj.paginator.count }} pacientes
+        </small>
+    {% else %}
+        <div class="alert alert-warning">No se encontraron pacientes.</div>
+    {% endif %}
+    </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+            <!-- Botón anterior -->
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="visually-hidden">Anterior</span>
+                    </a>
+                </li>
+            {% endif %}
+            <!-- Números de página -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == page_obj.number %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link bg-info border-info text-black">{{ num }}</span>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            <!-- Botón siguiente -->
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

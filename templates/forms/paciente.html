@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% if modo == 'create' %}
+    	Crear un nuevo paciente
+    {% elif modo == 'update' %}
+        Modificar paciente
+    {% endif %}
+{% endblock %}
+{% block body %}
+	<div class="d-flex justify-content-center">
+        <div>
+            <br>
+            <h2>
+                {% if modo == 'create' %}
+                    Crear un nuevo paciente
+                {% elif modo == 'update' %}
+                    Modificar paciente
+                {% endif %}
+            </h2>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                      <div class="mb-3">
+                          {{ form.nombreCompleto.label_tag }} {{ form.nombreCompleto }}
+                      </div>
+
+                      <div class="mb-3">
+                        {{ form.CI.label_tag }} {{ form.CI }}
+                      </div>
+
+                      <div class="mb-3">
+                        {{ form.fechaNacimieto.label_tag }} {{ form.fechaNacimieto }}
+                      </div>
+
+                      <div class="mb-3">
+                        <label>Sexo:</label>
+                        {{ form.sexo }}
+                      </div>
+
+                      <div id="embarazoCampos" class="mb-3 d-none">
+                        {{ form.embarazo.label_tag }} {{ form.embarazo }}
+                      </div>
+
+                      <div id="semanasEmbarazo" class="mb-3 d-none">
+                        {{ form.semanasEmbarazo.label_tag }} {{ form.semanasEmbarazo }}
+                      </div>
+
+                      <div class="mb-3">
+                        {{ form.telefono.label_tag }} {{ form.telefono }}
+                      </div>
+
+                      <div class="mb-3">
+                        <label>Antecedentes Familiares:</label>
+                        {{ form.antecedentesFamiliares }}
+                      </div>
+
+                      <div class="mb-3">
+                        {{ form.observaciones.label_tag }} {{ form.observaciones }}
+                      </div>
+
+                      <!-- Transfusión -->
+                      <div class="mb-3">
+                        <label>¿Necesita transfusión?</label>
+                        {{ form.transfucion }}
+                      </div>
+
+                      <div id="transfucionCampos" class="mb-3 d-none">
+                        {{ form.transfucionMotivo.label_tag }} {{ form.transfucionMotivo }}
+                      </div>
+
+                      <!-- Cirugía -->
+                      <div class="mb-3">
+                        <label>¿Tuvo cirugía?</label>
+                        {{ form.cirugia }}
+                      </div>
+
+                      <div id="cirugiaCampos" class="mb-3 d-none">
+                        {{ form.cirugiaMotivo.label_tag }} {{ form.cirugiaMotivo }}
+                      </div>
+
+                      <div class="mb-3">
+                          <label>¿Sangra por mucho tiempo?</label>
+                         {{ form.sangra }}
+                      </div>
+
+                      <!-- Fuma -->
+                      <div class="mb-3">
+                        <label>¿Fuma?</label>
+                        {{ form.fuma }}
+                      </div>
+
+                      <div id="fumaCampos" class="mb-3 d-none">
+                        {{ form.haceCuantoFuma.label_tag }} {{ form.haceCuantoFuma }}
+                        {{ form.cuantoFuma.label_tag }} {{ form.cuantoFuma }}
+                      </div>
+
+                      <!-- Toma -->
+                      <div class="mb-3">
+                        <label>¿Toma alcohol?</label>
+                        {{ form.toma }}
+                      </div>
+
+                      <div id="tomaCampos" class="mb-3 d-none">
+                        {{ form.haceCuantoToma.label_tag }} {{ form.haceCuantoToma }}
+                        {{ form.cuantoToma.label_tag }} {{ form.cuantoToma }}
+                      </div>
+
+                      <!-- Test ELISA -->
+                      <div class="mb-3">
+                        <label>¿Se hizo el test de ELISA?</label>
+                        {{ form.testElisa }}
+                      </div>
+
+                      <div id="testElisaCampos" class="mb-3 d-none">
+                        {{ form.haceCuantoTestElisa.label_tag }} {{ form.haceCuantoTestElisa }}
+                      </div>
+
+                      <div class="mb-3">
+                          <label>¿Es alergico/a a la anestesia?</label>
+                          {{ form.anestesia }}
+                      </div>
+                <br>
+                <input class="btn btn-success" type="submit" value="Guardar">
+                <br>
+            </form>
+        </div>
+    </div>
+{% endblock %}

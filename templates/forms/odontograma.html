@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    {% if modo == 'crear' %}
+    	Crear Odontograma
+    {% else %}
+    	Modificar Odontograma
+    {% endif %}
+    Odontograma
+{% endblock %}
+{% block body %}
+    <div class="container-fluid d-flex justify-content-center">
+        <div>
+            <br>
+            <h2>{% if modo == 'crear' %}
+                Crear odontograma
+            {% else %}
+                Modificar odontograma
+            {% endif %}</h2>
+            <br>
+            <div>
+                <div class="odontograma-container mx-custom">
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-1">
+                            <a class="btn btn-outline-light w-100"
+                               id="cuadrant-1-btn"
+                               data-bs-toggle="modal"
+                               data-bs-target="#cuadrante-1-Modal">
+                                <img src="{% static 'icon/Cuadrante1.png' %}" alt="Cuadrante 1" class="img-fluid">
+                            </a>
+                            <p class="mt-2 text-center">Cuadrante 1</p>
+                        </div>
+                        <div class="col-12 col-md-6 order-2">
+                            <a class="btn btn-outline-light w-100" id="cuadrant-2-btn">
+                                <img src="{% static 'icon/Cuadrante2.png' %}" alt="Cuadrante 2" class="img-fluid">
+                            </a>
+                            <p class="mt-2 text-center">Cuadrante 2</p>
+                        </div>
+                        <div class="col-12 col-md-6 order-3">
+                            <a class="btn btn-outline-light w-100" id="cuadrant-3-btn">
+                                <img src="{% static 'icon/Cuadrante4.png' %}" alt="Cuadrante 4" class="img-fluid">
+                            </a>
+                            <p class="mt-2 text-center">Cuadrante 4</p>
+                        </div>
+                        <div class="col-12 col-md-6 order-4">
+                            <a class="btn btn-outline-light w-100" id="cuadrant-4-btn">
+                                <img src="{% static 'icon/Cuadrante3.png' %}" alt="Cuadrante 3" class="img-fluid">
+                            </a>
+                            <p class="mt-2 text-center">Cuadrante 3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'utils/primerCuadranteModal.html' %}
+{% endblock %}

@@ -1,0 +1,37 @@
+.accordion-button.static-header::after {
+  display: none;
+}
+
+.delete-form{
+  display: inline;
+}
+
+.icon-cuadrante{
+  width: 150px;
+}
+
+.mx-custom{
+  width: 400px; !important;
+}
+
+.odontograma-container {
+  max-width: 1200px; /* o el ancho que necesites */
+  width: 100%;
+  padding: 0 15px;
+}
+
+#quadrantDientesContainer {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.diente-en-modal {
+  display: inline-block;
+  margin: 5px;
+  width: 50px; !important;
+}
+
+.tooth-svg-placeholder svg {
+    width: 50px; /* o el tamaño deseado para cada diente */
+    height: auto;
+}

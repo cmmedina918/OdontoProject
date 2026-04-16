@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+	Crear un procedimiento
+{% endblock %}
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <div>
+            <br>
+            <h2>Crear un procedimiento</h2>
+            <br>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.nombre.label_tag }} {{ form.nombre }}
+                </div>
+                <div class="mb-3">
+                    {{ form.precio.label_tag }} {{ form.precio }}
+                </div>
+                <br>
+                <input class="btn btn-success" type="submit" value="Guardar">
+            </form>
+        </div>
+    </div>
+{% endblock %}
