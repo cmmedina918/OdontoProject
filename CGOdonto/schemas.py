@@ -1,6 +1,6 @@
 from ninja import ModelSchema
 
-from CGOdonto.models import Paciente, Procedimiento, Enfermedad
+from CGOdonto.models import Paciente, Procedimiento, Enfermedad, Odontologo
 
 
 class PacienteOut(ModelSchema):
@@ -32,3 +32,13 @@ class EnfermedadIn(ModelSchema):
     class Meta:
         model = Enfermedad
         exclude = ['id','status']
+
+class OdontologoIn(ModelSchema):
+    class Meta:
+        model = Odontologo
+        exclude = ['id','status']
+
+class OdontologoOut(ModelSchema):
+    class Meta:
+        model = Odontologo
+        fields = '__all__'

@@ -7,18 +7,13 @@ from CGOdonto.schemas import PacienteOut, PacienteIn
 
 router = Router(tags=['pacientes'])
 
-@paginate
-@router.get('/', response=list[PacienteOut])
-def list_pacientes(request):
-    return Paciente.objects.filter(status=0)
-
 
 @router.post('/create', response={201: PacienteOut})
 def create_paciente(request, payload: PacienteIn):
     data = payload.dict()
     antecedentes = data.pop('antecedentesFamiliares', [])
 
-    paciente = Paciente.objects.create(**payload.dict())
+    paciente = Paciente.objects.create(**data)
 
     if antecedentes:
         paciente.antecedentesFamiliares.set(antecedentes)
@@ -37,7 +32,7 @@ def update_paciente(request, id_paciente: int, payload: PacienteIn):
 
     antecedentes = data.pop('antecedentesFamiliares')
 
-    for attr, value in payload.dict().items():
+    for attr, value in data.items():
         setattr(paciente, attr, value)
 
     paciente.save()
@@ -51,6 +46,12 @@ def update_paciente(request, id_paciente: int, payload: PacienteIn):
 @router.get('/{id_paciente}', response=PacienteOut)
 def get_paciente(request, id_paciente: int):
     return get_object_or_404(Paciente, id=id_paciente)
+
+
+@paginate
+@router.get('/', response=list[PacienteOut])
+def list_pacientes(request):
+    return Paciente.objects.filter(status=0)
 
 
 @router.delete('/{id_paciente}', response={204: None})

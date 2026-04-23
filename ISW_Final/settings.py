@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_g=)7losa()e(0+e%o_9-y!6n6bj=dli9dc#4e_um7^i!*e$z$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'CGOdonto.apps.CgodontoConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://172.16.6.36:5173",
+    "http://localhost:5173",
+    "http://127.0.0.1:8000",
 ]
 
 ROOT_URLCONF = 'ISW_Final.urls'

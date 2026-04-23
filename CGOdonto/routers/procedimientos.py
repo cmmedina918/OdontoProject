@@ -7,6 +7,12 @@ from CGOdonto.schemas import ProcedimientoOut, ProcedimientoIn
 
 router = Router(tags=['procedimientos'])
 
+
+@router.post('/create', response={201: ProcedimientoOut})
+def create_procedimiento(request, payload: ProcedimientoOut):
+    procedimiento = Procedimiento.objects.create(**payload.dict())
+    return 201, procedimiento
+
 @paginate
 @router.get('/', response=list[ProcedimientoOut])
 def list_procedimientos(request):
@@ -21,12 +27,6 @@ def get_procedimiento(request, id_procedimiento: int):
         return 404, {'message': 'Procedimiento no encontrado'}
 
     return procedimiento
-
-
-@router.post('/create', response={201: ProcedimientoOut})
-def create_procedimiento(request, payload: ProcedimientoOut):
-    procedimiento = Procedimiento.objects.create(**payload.dict())
-    return 201, procedimiento
 
 
 @router.put('/{id_procedimiento}', response=ProcedimientoOut)
