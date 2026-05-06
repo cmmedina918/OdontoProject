@@ -22,7 +22,7 @@ class Paciente(models.Model):
     CI = models.CharField(max_length=30, null=False, blank=False)
     fechaNacimieto = models.DateField(null=False, blank=False)
     sexo = models.BooleanField(null=False, blank=False, default=False)
-    fechaIngreso = models.DateField(null=False, blank=False, default= now)
+    fechaIngreso = models.DateField(null=False, blank=False, auto_now_add=True)
     telefono = models.CharField(max_length=30, null=False, blank=False)
     antecedentesFamiliares = models.ManyToManyField(Enfermedad, blank=True)
     observaciones = models.TextField(null=True, blank=True, max_length=200)

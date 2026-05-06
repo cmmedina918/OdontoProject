@@ -28,9 +28,9 @@ def update_paciente(request, id_paciente: int, payload: PacienteIn):
     if paciente.status == 1:
         return 400, {'message': 'Paciente inactivo'}
 
-    data = payload.dict()
+    data = payload.dict(exclude_unset=True)
 
-    antecedentes = data.pop('antecedentesFamiliares')
+    antecedentes = data.pop('antecedentesFamiliares', None)
 
     for attr, value in data.items():
         setattr(paciente, attr, value)

@@ -9,7 +9,7 @@ router = Router(tags=['procedimientos'])
 
 
 @router.post('/create', response={201: ProcedimientoOut})
-def create_procedimiento(request, payload: ProcedimientoOut):
+def create_procedimiento(request, payload: ProcedimientoIn):
     procedimiento = Procedimiento.objects.create(**payload.dict())
     return 201, procedimiento
 
